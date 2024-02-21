@@ -14,3 +14,30 @@
     border-radius: 40px;
     border: 1px solid #888;
 }
+.shopcategory-index-sort p span {
+    font-weight: 600;
+}
+.shopcategory-products {
+    /* margin: 20px 170px; */
+    margin: auto;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 75%;
+    margin-top: 20px;
+}
+
+.shopcategory-loadmore {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 100px auto;
+    width: 233px;
+    height: 69px;
+    border-radius: 75px;
+    background: #ededed;
+    color: #787878;
+    font-size: 18px;
+    font-weight: 500;
+}
