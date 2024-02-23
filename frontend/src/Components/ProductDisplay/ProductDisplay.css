@@ -87,6 +87,9 @@
     outline: none;
     cursor: pointer;
 }
+.productdisplay-right button:active {
+    background: white;
+}
 .productdisplay-category {
     margin-top: 5px;
 }

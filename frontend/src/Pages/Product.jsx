@@ -7,12 +7,9 @@ import DescriptionBox from '../Components/DescriptionBox/DescriptionBox'
 import RelatedProducts from '../Components/RelatedProducts/RelatedProducts'
 
 const Product = () => {
-  const all_products = useContext(ShopContext)
+  const {all_products} = useContext(ShopContext)
   const {productId} = useParams()
-  console.log("product id is", productId)
-  console.log(all_products)
   const product = all_products.find((item) => item.id === Number(productId))
-  console.log("peoduct in Product", product)
   return (
     <div>
       <ProductTag product = {product} />
