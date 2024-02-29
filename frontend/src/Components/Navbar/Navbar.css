@@ -79,7 +79,7 @@
     display: none;
 }
 
-@media((min-width:800px) and  (max-width:1024px)){
+@media(max-width:1024px){
     .navbar{
         padding: 12px 30px;
     }
@@ -112,7 +112,7 @@
     }
     .nav-menu {
         display: none;
-        height: 80px;
+        height: 40px;
         width: 100%;
         position: absolute;
         background: white;
