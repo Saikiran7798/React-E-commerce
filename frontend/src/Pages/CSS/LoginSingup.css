@@ -1,4 +1,5 @@
 .loginsignup {
+    display: flex;
     width: 100%;
     background: #fce3fe;
     padding-top: 100px;
@@ -60,4 +61,23 @@
     color: #5c5c5c;
     font-size: 18px;
     font-weight: 500;
+}
+@media(max-width:800px){
+    .loginsignup-container{
+        padding: 20px 30px;
+    }
+    .loginsignup-container h2 {
+        font-size: 24px;
+    }
+    .loginsignup-fields{
+        margin-top: 20px;
+    }
+    .loginsignup-fields input {
+        height: 50px;
+    }
+    .loginsignup-container button {
+        height: 50px;
+        font-size: 16px;
+    }
+
 }
