@@ -26,9 +26,6 @@ app.post('/upload', upload.single('product'), (req, res) => {
         image_url: `http://localhost:${PORT}/images/${req.file.filename}`
     })
 })
-app.get("/", async(req, res) => {
-    res.send("Hello")
-})
 
 app.post("/addProduct", async(req, res) => {
     let products = await Product.find({})
@@ -74,6 +71,16 @@ app.delete('/removeproduct', async(req,res) => {
         res.status(500).json({
             error:"Unable to delete id"
         })
+    }
+})
+
+app.get("/allproducts", async(req,res) => {
+    try{
+        let allProducts = await Product.find({})
+        res.send(allProducts)
+        console.log("all products fetched")
+    } catch(error){
+        res.status(500).send("Error")
     }
 })
 
