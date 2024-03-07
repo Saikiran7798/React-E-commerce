@@ -6,6 +6,8 @@ const jwt = require('jsonwebtoken')
 const path = require('path')
 const cors = require('cors')
 const Product = require('./mongo')
+const fs = require('fs').promises;
+
 
 app.use(express.json())
 app.use(cors())
@@ -23,7 +25,8 @@ app.use('/images', express.static('upload/images'))
 app.post('/upload', upload.single('product'), (req, res) => {
     res.json({
         success: 1,
-        image_url: `http://localhost:${PORT}/images/${req.file.filename}`
+        image_url: `http://localhost:${PORT}/images/${req.file.filename}`,
+        file_path: req.file.path
     })
 })
 
@@ -42,7 +45,8 @@ app.post("/addProduct", async(req, res) => {
             image: req.body.image,
             category:req.body.category,
             new_price:req.body.new_price,
-            old_price:req.body.old_price
+            old_price:req.body.old_price,
+            file_path:req.body.file_path
         })
         console.log(newProduct)
         await newProduct.save()
@@ -62,6 +66,7 @@ app.post("/addProduct", async(req, res) => {
 app.delete('/removeproduct', async(req,res) => {
     try{
         await Product.findOneAndDelete({id:req.body.id})
+        await fs.unlink(req.body.file_path)
         console.log("Removed")
         res.json({
             success:true,

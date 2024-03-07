@@ -32,6 +32,10 @@ const productSchema = new mongoose.Schema({
     available: {
         type: Boolean,
         default: true
+    },
+    file_path: {
+        type: String,
+        required: true
     }
 })
 
