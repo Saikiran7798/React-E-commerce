@@ -73,9 +73,7 @@ app.delete('/removeproduct', async(req,res) => {
             id: req.body.id
         })
     }catch(error){
-        res.status(500).json({
-            error:"Unable to delete id"
-        })
+        res.status(500).send("Unable to delete id")
     }
 })
 
@@ -83,7 +81,6 @@ app.get("/allproducts", async(req,res) => {
     try{
         let allProducts = await Product.find({})
         res.send(allProducts)
-        console.log("all products fetched")
     } catch(error){
         res.status(500).send("Error")
     }
