@@ -24,7 +24,7 @@ const LoginSignup = () => {
           email: formdata.email,
           password: formdata.password,
       })
-      localStorage.setItem('auth-token', response.data.token)
+      localStorage.setItem('auth-token', response.data.token) 
       console.log("logged in", response)
       setShowError('')
       navigate('/')

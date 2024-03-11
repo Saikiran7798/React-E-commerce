@@ -86,6 +86,25 @@ app.get("/allproducts", async (req, res) => {
     }
 })
 
+app.get("/newCollections", async (req, res) => {
+    try {
+        let all_products = await Product.find({})
+        let new_collection = all_products.slice(-8)
+        res.json(new_collection)
+    } catch (error) {
+        res.status(500).send("Error")
+    }
+})
+app.get("/popularWomen", async (req, res) => {
+    try {
+        let all_products = await Product.find({category: "women"})
+        let popular_products = all_products.slice(0,4)
+        res.json(popular_products)
+    } catch (error) {
+        res.status(500).send("Error")
+    }
+})
+
 app.post("/signup", async (req, res) => {
     let user = await User.findOne({ email: req.body.email });
     if (user) {
@@ -106,44 +125,43 @@ app.post("/signup", async (req, res) => {
                 id: newUser.id
             }
         }
-        const token = jwt.sign(data,'secret_ecom')
-        res.json({success: true,token})
+        const token = jwt.sign(data, 'secret_ecom')
+        res.json({ success: true, token })
     } catch (error) {
         res.status(500).send("Server Error")
     }
 })
 
 app.post("/login", async (req, res) => {
-    try{
-        let user = await User.findOne({email: req.body.email})
-        if(user){
+    try {
+        let user = await User.findOne({ email: req.body.email })
+        if (user) {
             const passCompare = req.body.password === user.password
-            if(passCompare){
+            if (passCompare) {
                 const data = {
                     user: {
                         id: user.id
                     }
                 }
-                const token = jwt.sign(data,'secret_ecom')
+                const token = jwt.sign(data, 'secret_ecom')
                 res.json({
-                    success: true, 
-                    token: token
+                    success: true, token
                 })
             }
-            else{
+            else {
                 res.status(400).json({
                     success: false,
                     error: "Invalid Password"
                 })
             }
         }
-        else{
+        else {
             res.status(400).json({
                 success: false,
                 error: "Invalid Account"
             })
         }
-    } catch(error){
+    } catch (error) {
         res.status(500).send("Error")
     }
 })
