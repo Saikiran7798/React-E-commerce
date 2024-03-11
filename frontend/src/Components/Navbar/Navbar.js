@@ -11,7 +11,6 @@ const Navbar = () => {
   const [menu, setMenu] = useState("shop")
   const {cartTotal} = useContext(ShopContext)
   const menuRef = useRef(null)
-
   const dropdown_toggle = (event) => {
     menuRef.current.classList.toggle('nav-menu-visible')
     event.target.classList.toggle('open')
@@ -30,7 +29,7 @@ const Navbar = () => {
         <li onClick={() => setMenu("kids")}><Link to ='/kids'>Kids</Link>{menu === "kids" ? <hr /> : null}</li>
       </ul>
       <div className="nav-login-cart">
-        <Link to = '/login'><button>Login</button></Link>
+        {localStorage.getItem('auth-token')? <Link to = '/login'><button onClick={() => localStorage.removeItem('auth-token')}>Logout</button></Link> : <Link to = '/login'><button>Login</button></Link>}
         <Link to ='/cart'><img src={cart_icon} alt="" /></Link>
         <div className="nav-cart-count">{cartTotal}</div>
       </div>

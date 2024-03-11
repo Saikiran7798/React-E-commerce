@@ -62,6 +62,9 @@
     font-size: 18px;
     font-weight: 500;
 }
+.loginsignup-login span {
+    cursor: pointer;
+}
 @media(max-width:800px){
     .loginsignup-container{
         padding: 20px 30px;

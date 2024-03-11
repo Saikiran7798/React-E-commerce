@@ -39,5 +39,29 @@ const productSchema = new mongoose.Schema({
     }
 })
 
-module.exports =  mongoose.model("Product", productSchema)
+const userSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    cartData: {
+        type: Object,
+        default: []
+    }
+})
+
+const User = mongoose.model("User", userSchema)
+const Product = mongoose.model("Product", productSchema)
+module.exports = {
+    User,
+    Product
+}
 

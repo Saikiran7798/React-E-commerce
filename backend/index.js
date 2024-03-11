@@ -2,10 +2,10 @@ const PORT = 4000;
 const express = require('express')
 const app = express()
 const multer = require('multer')
-const jwt = require('jsonwebtoken') 
+const jwt = require('jsonwebtoken')
 const path = require('path')
 const cors = require('cors')
-const Product = require('./mongo')
+const { Product, User } = require('./mongo')
 const fs = require('fs').promises;
 
 
@@ -16,10 +16,10 @@ const storage = multer.diskStorage({
     destination: './upload/images',
     filename: (req, file, cb) => {
         cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
-    } 
+    }
 })
 
-const upload = multer({storage: storage})
+const upload = multer({ storage: storage })
 app.use('/images', express.static('upload/images'))
 
 app.post('/upload', upload.single('product'), (req, res) => {
@@ -30,32 +30,32 @@ app.post('/upload', upload.single('product'), (req, res) => {
     })
 })
 
-app.post("/addProduct", async(req, res) => {
+app.post("/addProduct", async (req, res) => {
     let products = await Product.find({})
     let id = 1;
-    if(products.length > 0){
+    if (products.length > 0) {
         let last_product_array = products.slice(-1)
         let last_product = last_product_array[0]
         id = last_product.id + 1
     }
-    try{
+    try {
         const newProduct = Product({
-            id:id,
+            id: id,
             name: req.body.name,
             image: req.body.image,
-            category:req.body.category,
-            new_price:req.body.new_price,
-            old_price:req.body.old_price,
-            file_path:req.body.file_path
+            category: req.body.category,
+            new_price: req.body.new_price,
+            old_price: req.body.old_price,
+            file_path: req.body.file_path
         })
         console.log(newProduct)
         await newProduct.save()
         console.log("Saved")
         res.json({
-            success:true,
-            name:req.body.name
+            success: true,
+            name: req.body.name
         })
-    }catch(error){
+    } catch (error) {
         console.log("Error", error)
         res.status(500).json({
             error: "Internal Server Error"
@@ -63,24 +63,86 @@ app.post("/addProduct", async(req, res) => {
     }
 })
 
-app.delete('/removeproduct', async(req,res) => {
-    try{
-        await Product.findOneAndDelete({id:req.body.id})
+app.delete('/removeproduct', async (req, res) => {
+    try {
+        await Product.findOneAndDelete({ id: req.body.id })
         await fs.unlink(req.body.file_path)
         console.log("Removed")
         res.json({
-            success:true,
+            success: true,
             id: req.body.id
         })
-    }catch(error){
+    } catch (error) {
         res.status(500).send("Unable to delete id")
     }
 })
 
-app.get("/allproducts", async(req,res) => {
-    try{
+app.get("/allproducts", async (req, res) => {
+    try {
         let allProducts = await Product.find({})
         res.send(allProducts)
+    } catch (error) {
+        res.status(500).send("Error")
+    }
+})
+
+app.post("/signup", async (req, res) => {
+    let user = await User.findOne({ email: req.body.email });
+    if (user) {
+        return res.status(400).json({
+            success: false,
+            error: "Existing User"
+        })
+    }
+    try {
+        const newUser = new User({
+            name: req.body.name,
+            email: req.body.email,
+            password: req.body.password
+        })
+        await newUser.save()
+        const data = {
+            user: {
+                id: newUser.id
+            }
+        }
+        const token = jwt.sign(data,'secret_ecom')
+        res.json({success: true,token})
+    } catch (error) {
+        res.status(500).send("Server Error")
+    }
+})
+
+app.post("/login", async (req, res) => {
+    try{
+        let user = await User.findOne({email: req.body.email})
+        if(user){
+            const passCompare = req.body.password === user.password
+            if(passCompare){
+                const data = {
+                    user: {
+                        id: user.id
+                    }
+                }
+                const token = jwt.sign(data,'secret_ecom')
+                res.json({
+                    success: true, 
+                    token: token
+                })
+            }
+            else{
+                res.status(400).json({
+                    success: false,
+                    error: "Invalid Password"
+                })
+            }
+        }
+        else{
+            res.status(400).json({
+                success: false,
+                error: "Invalid Account"
+            })
+        }
     } catch(error){
         res.status(500).send("Error")
     }
