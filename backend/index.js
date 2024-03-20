@@ -97,8 +97,8 @@ app.get("/newCollections", async (req, res) => {
 })
 app.get("/popularWomen", async (req, res) => {
     try {
-        let all_products = await Product.find({category: "women"})
-        let popular_products = all_products.slice(0,4)
+        let all_products = await Product.find({ category: "women" })
+        let popular_products = all_products.slice(0, 4)
         res.json(popular_products)
     } catch (error) {
         res.status(500).send("Error")
@@ -165,6 +165,42 @@ app.post("/login", async (req, res) => {
         res.status(500).send("Error")
     }
 })
+
+const fetchUserInfo = async (req, res, next) => {
+    const token = req.header('auth-token')
+    if (!token) {
+        res.status(400).send("Inavlid Token")
+    } else {
+        try {
+            const data = jwt.verify(token, 'secret_ecom')
+            req.user = data.user
+            next()
+        } catch (error) {
+            res.status(400).json("Token Error")
+        }
+    }
+}
+
+app.get('/defaultCart', fetchUserInfo, async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id )
+        res.json(user.cartData)
+    } catch (error) {
+        res.status(500).send("Server Error")
+    }
+})
+
+app.post('/updateCart', fetchUserInfo, async (req, res) => {
+    try {
+        // const user = await User.findById({ id: req.user.id })
+        console.log(req.body)
+        await User.findOneAndUpdate({_id: req.user.id}, {cartData: req.body.data})
+        res.send('Succesfully updated')
+    } catch (error) {
+        res.status(500).send("Error")
+    }
+})
+
 
 app.listen(PORT, () => {
     console.log("Listening")

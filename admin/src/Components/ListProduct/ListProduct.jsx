@@ -11,7 +11,6 @@ const ListProduct = () => {
       const all_products = await axios.get('http://localhost:4000/allproducts')
       setAllProducts(all_products.data)
     } catch (error) {
-      console.log("Error Retrieving data")
     }
   }
   useEffect(() => {
@@ -19,8 +18,6 @@ const ListProduct = () => {
   }, [])
   const removeProduct = async (id, file_path) => {
     try{
-      console.log("id is", id)
-      console.log("file_path is", file_path)
       await axios.delete('http://localhost:4000/removeproduct',{
         data: {
           id:id,

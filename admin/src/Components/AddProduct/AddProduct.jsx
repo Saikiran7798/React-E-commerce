@@ -30,14 +30,11 @@ const AddProduct = () => {
       const data = response.data
       product.image = data.image_url
       product.file_path = data.file_path
-      console.log("Filepath", product.file_path)
     } catch(error){
-      console.log("Axios Error for uploading image")
     }
     try{
       const response = await axios.post("http://localhost:4000/addproduct", product)
       const data = response.data
-      console.log(`${data.name} is added succesfullt to Database`)
       alert(`${data.name} Product is added succesfully`)
       setImage(false)
       setProductDetails({
@@ -49,7 +46,6 @@ const AddProduct = () => {
         file_path: ""
       })
     }catch(error){
-      console.log("Axios Error for uploading Product")
     }
   }
   return (

@@ -1,11 +1,16 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import './ProductDisplay.css'
 import star_icon from '../Assets/star_icon.png'
 import star_dull_icon from '../Assets/star_dull_icon.png'
 import { ShopContext } from '../../Context/ShopContext'
 
-const ProductDisplay = ({ product }) => {
-    const {addToCart} = useContext(ShopContext)
+const ProductDisplay = ({ product, setErrorPage }) => {
+    const { addToCart } = useContext(ShopContext)
+    const checkCartError = () => {
+        if (!localStorage.getItem('auth-token')) {
+            setErrorPage();
+        }
+    }
     return (
         <div className='productdisplay'>
             <div className="productdisplay-left">
@@ -51,7 +56,10 @@ const ProductDisplay = ({ product }) => {
                         <div>XXL</div>
                     </div>
                 </div>
-                <button onClick={() => {addToCart(product.id)}}>Add to Cart</button>
+                <button onClick={() => {
+                    checkCartError()
+                    addToCart(product.id)
+                }}>Add to Cart</button>
                 <p className="productdisplay-category">
                     <span>Category: </span>{product.category}
                 </p>

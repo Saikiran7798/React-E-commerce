@@ -28,6 +28,7 @@ const LoginSignup = () => {
       console.log("logged in", response)
       setShowError('')
       navigate('/')
+      window.location.reload();
     }catch(error) {
       console.log(error)
       setShowError(error.response.data.error)
