@@ -1,18 +1,16 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import './Navbar.css'
 import logo from '../Assets/logo.png'
 import cart_icon from '../Assets/cart_icon.png'
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { ShopContext } from '../../Context/ShopContext'
 import dropdown_icon from '../Assets/navbar_dropdown.png'
 
 const Navbar = () => {
 
   const [menu, setMenu] = useState("shop")
-  const [loginState, setLoginState] = useState("Login")
   const { cartTotal } = useContext(ShopContext)
   const menuRef = useRef(null)
-  const location = useLocation();
   const dropdown_toggle = (event) => {
     menuRef.current.classList.toggle('nav-menu-visible')
     event.target.classList.toggle('open')

@@ -11,7 +11,7 @@ const ShopContextProvider = ({ children }) => {
 
     useEffect(() => {
         getDefaultCart()
-    }, [])
+    })
 
     // useEffect(() => {
     //     getDefaultCartTotal()
