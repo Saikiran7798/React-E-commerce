@@ -10,12 +10,14 @@ const ShopContextProvider = ({ children }) => {
     const [cartItems, setCartItems] = useState({})
 
     useEffect(() => {
-        getDefaultCart()
-    })
+        callDetails()
+    },[])
 
-    // useEffect(() => {
-    //     getDefaultCartTotal()
-    // }, [all_products])
+    const callDetails = async () => {
+        const prods = await fetchProducts();
+        const cart_data = await getDefaultCart();
+        getDefaultCartTotal(cart_data, prods)
+    }
 
     const fetchProducts = async () => {
         try {
@@ -38,17 +40,15 @@ const ShopContextProvider = ({ children }) => {
                 },)
                 setCartItems(response.data)
                 setCartTotal(Object.keys(response.data).length)
-                const prods = await fetchProducts()
-                console.log("Response is",response.data)
-                if(prods){
-                    getDefaultCartTotal(response.data, prods)
-                }
+                return response.data
             } catch (error) {
                 setCartItems([])
+                return []
             }
         }
         else {
             setCartItems([])
+            return []
         }
     }
     const addToCart = async (productId) => {
