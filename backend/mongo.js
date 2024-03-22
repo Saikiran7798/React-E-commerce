@@ -1,5 +1,7 @@
 const mongoose = require('mongoose')
-mongoose.connect('mongodb+srv://sai:3294@e-commerce.n0ggzd5.mongodb.net/E-Commerce?retryWrites=true&w=majority&appName=E-Commerce')
+require('dotenv').config();
+const apiURL = process.env.REACT_APP_API_URL
+mongoose.connect(apiURL)
 const productSchema = new mongoose.Schema({
     id: {
         type: Number,
