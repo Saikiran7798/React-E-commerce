@@ -1,4 +1,3 @@
-const PORT = 4000;
 const express = require('express')
 const app = express()
 const multer = require('multer')
@@ -201,7 +200,7 @@ app.post('/updateCart', fetchUserInfo, async (req, res) => {
     }
 })
 
-
+const PORT = process.env.PORT || 4000
 app.listen(PORT, () => {
     console.log("Listening")
 })
