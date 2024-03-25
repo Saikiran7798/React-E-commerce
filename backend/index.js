@@ -10,6 +10,7 @@ const fs = require('fs').promises;
 
 app.use(express.json())
 app.use(cors())
+app.use(express.static("build"))
 
 const storage = multer.diskStorage({
     destination: './upload/images',
