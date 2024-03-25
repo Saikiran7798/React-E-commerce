@@ -11,6 +11,13 @@ const fs = require('fs').promises;
 app.use(express.json())
 app.use(cors())
 app.use(express.static("build"))
+// Serve static files from the 'build' directory
+app.use(express.static(path.join(__dirname, 'build')));
+
+// Define route handler to serve index.html for all routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 const storage = multer.diskStorage({
     destination: './upload/images',
