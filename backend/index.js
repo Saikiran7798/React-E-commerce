@@ -15,9 +15,6 @@ app.use(express.static("build"))
 app.use(express.static(path.join(__dirname, 'build')));
 
 // Define route handler to serve index.html for all routes
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
 
 const storage = multer.diskStorage({
     destination: './upload/images',
@@ -207,6 +204,9 @@ app.post('/updateCart', fetchUserInfo, async (req, res) => {
         res.status(500).send("Error")
     }
 })
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  });
 
 const PORT = process.env.PORT || 4000
 app.listen(PORT, () => {
